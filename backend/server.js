@@ -34,7 +34,6 @@ const upload = multer({
     }
 });
 
-// Create uploads folder
 const fs = require('fs');
 if (!fs.existsSync('uploads')) {
     fs.mkdirSync('uploads');
