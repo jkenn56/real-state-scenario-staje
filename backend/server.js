@@ -9,7 +9,6 @@ require('dotenv').config();
 
 const app = express();
 
-// Configure multer for image upload
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'uploads/')
@@ -61,7 +60,6 @@ app.use(session({
     }
 }));
 
-// Middleware
 const isAuthenticated = (req, res, next) => {
     if (req.session.user) {
         next();
@@ -78,7 +76,6 @@ const isAgent = (req, res, next) => {
     }
 };
 
-// ========== AUTH ROUTES ==========
 app.post('/api/register', async (req, res) => {
     try {
         const { name, email, password, is_agent } = req.body;
@@ -145,7 +142,6 @@ app.get('/api/session', (req, res) => {
     }
 });
 
-// ========== LISTINGS ROUTES ==========
 app.get('/api/listings', async (req, res) => {
     try {
         const [listings] = await db.execute(`
@@ -237,7 +233,6 @@ app.post('/api/listings/:id/view', async (req, res) => {
     }
 });
 
-// ========== DASHBOARD ROUTES ==========
 app.get('/api/agent/stats', isAuthenticated, isAgent, async (req, res) => {
     try {
         const userId = req.session.user.id;
@@ -312,7 +307,6 @@ app.post('/api/inquiries/:id/reply', isAuthenticated, isAgent, async (req, res) 
     }
 });
 
-// ========== INQUIRY ROUTES ==========
 app.post('/api/inquiries', isAuthenticated, async (req, res) => {
     try {
         const { listing_id, message } = req.body;
@@ -342,7 +336,6 @@ app.get('/api/user/inquiries', isAuthenticated, async (req, res) => {
     }
 });
 
-// ========== FAVORITES ROUTES ==========
 app.post('/api/favorites', isAuthenticated, async (req, res) => {
     try {
         const { listing_id } = req.body;
